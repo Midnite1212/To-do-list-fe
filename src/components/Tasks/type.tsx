@@ -1,7 +1,3 @@
-export type NavBarComponents = {
-  //some properties
-};
-
 export enum TaskStatus {
   OPEN = "OPEN",
   IN_PROGRESS = "IN_PROGRESS",

@@ -6,11 +6,11 @@ import { BrowserRouter } from "react-router-dom";
 
 function App() {
   return (
-    <Tabs sx={{ flexGrow: 1, h: "100vh", display: "flex" }}>
-      <BrowserRouter>
-        <MainContainer />
-      </BrowserRouter>
-    </Tabs>
+    // <Tabs sx={{ flexGrow: 1, h: "100vh", display: "flex" }}>
+    <BrowserRouter>
+      <MainContainer />
+    </BrowserRouter>
+    // </Tabs>
   );
 }
 
