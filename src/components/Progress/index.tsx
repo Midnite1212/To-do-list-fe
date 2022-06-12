@@ -21,7 +21,12 @@ const Progress: React.FC<Props> = ({ data }) => {
 
   return (
     <>
-      <Box>
+      <Box
+        sx={{
+          background:
+            "linear-gradient(166.69deg, #B4C1F6 1.41%, #7190FF 97.41%)",
+        }}
+      >
         <Grid container direction="column" height="100vh">
           <Grid item xs={4}>
             <Typography>Open ({open})</Typography>

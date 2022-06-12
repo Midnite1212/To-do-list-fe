@@ -46,7 +46,7 @@ const MainContainer: React.FC = () => {
                     path="*/monthly"
                     element={<Typography>test</Typography>}
                   />
-                  <Route path="*" element={<Typography>error</Typography>} />
+                  <Route path="*" element={<Tasks tasks={taskData} />} />
                 </Routes>
               </Grid>
             </Grid>
