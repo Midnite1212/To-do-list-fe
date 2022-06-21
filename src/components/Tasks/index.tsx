@@ -1,13 +1,11 @@
 import { Grid, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import TaskCard from "../Task-Card.tsx";
-import { Task } from "./type";
+import { Task, TaskProps } from "./type";
+import React, { SetStateAction } from 'react';
 
-type Props = {
-  tasks: Task[];
-};
 
-const Tasks: React.FC<Props> = ({ tasks }) => {
+const Tasks = (props: TaskProps) => {
   const currentPath = window.location.pathname;
 
   return (
@@ -18,12 +16,14 @@ const Tasks: React.FC<Props> = ({ tasks }) => {
             <Typography>Sort</Typography>
           </Grid>
           <Grid item xs={6}>
-            <Typography>{tasks.length} Tasks</Typography>
+            <Typography>{props.tasks.length} Tasks</Typography>
           </Grid>
         </Grid>
-        {tasks.map((t) => {
-          return <TaskCard task={t} />;
-        })}
+        <Grid container style={{ overflowY: "scroll" }}>
+          {props.tasks.map((t, i) => {
+            return <Grid item xs={11}> <TaskCard task={t} index={i} allTask={props.tasks} setTask={props.setTasks} /></Grid>;
+          })}
+        </Grid>
       </Container>
     </>
   );

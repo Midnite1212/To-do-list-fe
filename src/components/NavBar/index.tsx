@@ -1,11 +1,9 @@
-import { useState } from "react";
 import { Button, Grid, Typography, Modal } from "@mui/material";
-import { Box } from "@mui/system";
-import { Task } from "./type";
+import { NavBarProps } from "./type";
 import CreateTask from "../CreateTask";
 import React from "react";
 
-const NavBar: React.FC = () => {
+const NavBar = (props: NavBarProps) => {
   const fullDate = new Date();
   const currentPath = window.location.pathname;
   const displayDate = fullDate;
@@ -52,7 +50,7 @@ const NavBar: React.FC = () => {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
-            <CreateTask />
+            <CreateTask allTasks={props.allTasks} setTask={props.setTask} handleClose={handleClose} />
           </Modal>
         </Grid>
         {/*Loop through the daily/weekly/... 7 times */}

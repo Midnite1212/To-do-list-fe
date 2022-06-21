@@ -31,13 +31,13 @@ const MainContainer: React.FC = () => {
       <Container sx={{ height: "100vh" }}>
         <Grid container spacing={0}>
           <Grid item xs={9}>
-            <Grid container height="100vh" direction="column">
-              <Grid item xs={4}>
-                <NavBar />
+            <Grid container height="100vh">
+              <Grid item xs={12}>
+                <NavBar allTasks={taskData} setTask={setTaskData} />
               </Grid>
-              <Grid item xs={8}>
+              <Grid item xs={12}>
                 <Routes>
-                  <Route path="/daily" element={<Tasks tasks={taskData} />} />
+                  <Route path="/daily" element={<Tasks tasks={taskData} setTasks={setTaskData} />} />
                   <Route
                     path="/weekly"
                     element={<Typography>test</Typography>}
@@ -46,13 +46,13 @@ const MainContainer: React.FC = () => {
                     path="*/monthly"
                     element={<Typography>test</Typography>}
                   />
-                  <Route path="*" element={<Tasks tasks={taskData} />} />
+                  <Route path="*" element={<Tasks tasks={taskData} setTasks={setTaskData} />} />
                 </Routes>
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={3}>
-            <Progress data={taskData} />
+            <Progress data={taskData} setData={setTaskData} />
           </Grid>
         </Grid>
       </Container>

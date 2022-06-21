@@ -2,28 +2,21 @@ import { Typography, Button, Grid, Menu, MenuItem, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 import React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import UpdateTask from "../UpdateTask";
 import { Task, TaskStatus } from "../Tasks/type";
+import { TaskCardProps } from "./types";
+import { styles } from "./styles";
 
-type TaskCardProps = {
-  task: Task;
-};
-
-const TaskCard: React.FC<TaskCardProps> = (props) => {
-  const [done, setDone] = useState(false);
+const TaskCard = (props: TaskCardProps) => {
+  const [done, setDone] = useState(props.task.status !== TaskStatus.DONE);
   const { task } = props;
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [parentAnchorE1, setParentAnchorE1] = useState<null | HTMLElement>(
-    null
-  );
-
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setParentAnchorE1(event.currentTarget);
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
-    setParentAnchorE1(null);
     setAnchorEl(null);
   };
   const updateStatus = async () => {
@@ -33,7 +26,7 @@ const TaskCard: React.FC<TaskCardProps> = (props) => {
         description: task.description,
         date: task.date,
         sequence: task.sequence,
-        status: done ? TaskStatus.DONE : TaskStatus.OPEN,
+        status: done ? TaskStatus.OPEN : TaskStatus.DONE,
       });
     } catch (error) {
       console.log(error);
@@ -46,36 +39,35 @@ const TaskCard: React.FC<TaskCardProps> = (props) => {
 
   const handleDelete = async (id: string) => {
     handleClose();
-    console.log(task.id);
     try {
       await axios.delete(`${process.env.REACT_APP_URL}/${task.id}`);
     } catch (error) {
       console.log(error);
     }
+    const currTasks: Task[] = props.allTask.filter(a => a.id !== id);
+    props.setTask(currTasks)
   };
 
-  useEffect(() => {
-    updateStatus();
-  }, [done]);
+  const handleDone = () => {
+    setDone(!done)
+    updateStatus()
+    const updateAllTask = [...props.allTask];
+    updateAllTask[props.index].status = done ? TaskStatus.DONE : TaskStatus.OPEN
+    props.setTask(updateAllTask);
+    console.log(updateAllTask)
+  }
 
   return (
     <>
-      <Box
-        sx={{
-          marginBottom: "20px",
-          backgroundColor: "#89A0FF",
-          height: "12vh",
-          borderRadius: "20px",
-        }}
-      >
+      <Box className={styles.Task_Card}>
         <Grid container>
           <Grid item xs={1}>
             <Button
               onClick={() => {
-                setDone(!done);
+                handleDone()
               }}
             >
-              aa
+              [x]
             </Button>
           </Grid>
           <Grid item xs={10}>
@@ -101,9 +93,9 @@ const TaskCard: React.FC<TaskCardProps> = (props) => {
           <Grid item xs={1}>
             <Button
               id="basic-button"
-              aria-controls={Boolean(parentAnchorE1) ? "basic-menu" : undefined}
+              aria-controls={open ? 'basic-menu' : undefined}
               aria-haspopup="true"
-              aria-expanded={Boolean(parentAnchorE1) ? "true" : undefined}
+              aria-expanded={open ? 'true' : undefined}
               onClick={handleClick}
             >
               <img
@@ -114,16 +106,16 @@ const TaskCard: React.FC<TaskCardProps> = (props) => {
             <Menu
               id="basic-menu"
               anchorEl={anchorEl}
-              open={Boolean(parentAnchorE1)}
+              open={open}
               onClose={handleClose}
               MenuListProps={{
-                "aria-labelledby": "basic-button",
+                'aria-labelledby': 'basic-button',
               }}
             >
-              <MenuItem>
+              <MenuItem onClick={handleClose}>
                 <Button onClick={handleClick}>
                   <Modal
-                    open={Boolean(anchorEl)}
+                    open={false}
                     onClose={handleClose}
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
@@ -135,7 +127,7 @@ const TaskCard: React.FC<TaskCardProps> = (props) => {
               </MenuItem>
               <MenuItem
                 onClick={() => {
-                  handleDelete(task.id);
+                  handleDelete(task.id!);
                 }}
               >
                 Delete

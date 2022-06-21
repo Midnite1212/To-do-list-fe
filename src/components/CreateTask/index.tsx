@@ -10,6 +10,7 @@ import {
 import { TaskStatus } from "../Tasks/type";
 import React, { useState } from "react";
 import axios from "axios";
+import { CreateTaskProps } from "./types";
 
 const defaultValues = {
   title: "",
@@ -19,7 +20,7 @@ const defaultValues = {
   progress: TaskStatus.OPEN,
 };
 
-const CreateTask: React.FC<unknown> = () => {
+const CreateTask = (props: CreateTaskProps) => {
   const [formValues, setFormValues] = useState(defaultValues);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,6 +61,16 @@ const CreateTask: React.FC<unknown> = () => {
     } catch (error) {
       console.log(error);
     }
+    const addTask = JSON.parse(JSON.stringify(props.allTasks));
+    addTask.push({
+      title: title,
+      description: description,
+      sequence: sequence,
+      date: new Date(date),
+      status: progress,
+    })
+    props.setTask(addTask)
+    props.handleClose();
   };
   const style = {
     position: "absolute" as "absolute",
