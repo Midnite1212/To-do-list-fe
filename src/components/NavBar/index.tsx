@@ -15,7 +15,7 @@ const NavBar = (props: NavBarProps) => {
   for (let i = 0; i < 7; i++) {
     dateNav.push(
       <Grid
-        sx={{ alignItems: "flex-end", display: "flex" }}
+        sx={{ alignItems: "center", display: "flex", justifyContent:"center", color:"white" }}
         key={i}
         item
         xs={12 / 7}
@@ -26,6 +26,7 @@ const NavBar = (props: NavBarProps) => {
             return displayDate.toDateString();
           }
         })()}
+        Day {i + 1}
       </Grid>
     );
   }
@@ -35,22 +36,33 @@ const NavBar = (props: NavBarProps) => {
       <Grid
         container
         sx={{
-          backgroundColor: "#B4C1F6",
           display: "flex",
           justifyContent: "space-between",
         }}
-        height="100%"
+        height="60%"
       >
-        <Grid item xs={10}></Grid>
+        <Grid item xs={1}>
+          {/* Menu */}
+        </Grid>
+        <Grid item xs={9} style={{display:"flex", alignItems:"center", justifyContent:"center", fontSize:"2rem", fontWeight:"bold"}}>
+          To Do List
+        </Grid>
         <Grid item xs={2}>
-          <Button onClick={handleOpen}>+</Button>
+          <Button onClick={handleOpen} style={{ marginTop: "20px" }}>
+            <img
+              width="75%"
+              src={process.env.PUBLIC_URL + 'Images/AddIcon.svg'}
+              alt="Add Icon" />
+          </Button>
           <Modal
             open={open}
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
-            <CreateTask allTasks={props.allTasks} setTask={props.setTask} handleClose={handleClose} />
+            <>
+              <CreateTask allTasks={props.allTasks} setTask={props.setTask} handleClose={handleClose} />
+            </>
           </Modal>
         </Grid>
         {/*Loop through the daily/weekly/... 7 times */}

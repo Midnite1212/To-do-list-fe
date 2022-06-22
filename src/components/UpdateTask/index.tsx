@@ -3,19 +3,19 @@ import {
   Typography,
   TextField,
   Button,
+  Modal,
   Select,
   SelectChangeEvent,
   MenuItem,
+  Grid
 } from "@mui/material";
-import { Task, TaskStatus } from "../Tasks/type";
-import React, { useState } from "react";
+import { TaskStatus } from "../Tasks/type";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { UpdateTaskProps } from "./types";
+import { styles } from "./styles";
 
-type UpdateTaskProps = {
-  task: Task;
-};
-
-const UpdateTask: React.FC<UpdateTaskProps> = (props) => {
+const UpdateTask = (props: UpdateTaskProps) => {
   const { task } = props;
   const defaultValues = {
     title: task.title,
@@ -24,7 +24,12 @@ const UpdateTask: React.FC<UpdateTaskProps> = (props) => {
     date: task.date,
     progress: task.status,
   };
+  // const [open, setOpen] = useState(false);
   const [formValues, setFormValues] = useState(defaultValues);
+
+  // const handleOpen = () => setOpen(true);
+  // const handleClose = () => setOpen(false);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
     setFormValues({
@@ -63,81 +68,108 @@ const UpdateTask: React.FC<UpdateTaskProps> = (props) => {
     } catch (error) {
       console.log(error);
     }
+    const taskData = [...props.allTasks];
+    taskData[props.index] = {
+      title: title,
+      description: description,
+      sequence: sequence,
+      date: new Date(date),
+      status: progress,
+    };
+    props.setTask(taskData)
+    props.onClose()
   };
-  const style = {
-    position: "absolute" as "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "white",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-  };
+
+
   return (
     <>
-      <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
-        <Container>
-          <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Update Task
-            </Typography>
-            <TextField
-              id="name-input"
-              name="title"
-              label="Title"
-              type="text"
-              value={formValues.title}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleInputChange(e)
-              }
-            />
-            <TextField
-              id="description-input"
-              name="description"
-              label="Description"
-              type="text"
-              value={formValues.description}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleInputChange(e)
-              }
-            />
-            <TextField
-              id="sequence-input"
-              name="sequence"
-              label="Sequence"
-              type="number"
-              value={formValues.sequence}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleInputChange(e)
-              }
-            />
-            <TextField
-              id="date-input"
-              name="date"
-              label="Date (YYYY-MM-DD)"
-              type="text"
-              value={formValues.date}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleInputChange(e)
-              }
-            />
-            <Select
-              id="progress-input"
-              name="progress"
-              label="Progress"
-              value={formValues.progress}
-              onChange={(e) => handleSelectChange(e)}
-            >
-              <MenuItem value={TaskStatus.OPEN}>Open</MenuItem>
-              <MenuItem value={TaskStatus.IN_PROGRESS}>In progress</MenuItem>
-              <MenuItem value={TaskStatus.DONE}>Done</MenuItem>
-            </Select>
-            <Button type="submit">Submit</Button>
-          </Box>
-        </Container>
-      </form>
+      {/* <Button onClick={handleOpen}>Edit</Button> */}
+      <Modal
+        open={props.isOpen}
+        onClose={props.onClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
+          <Container>
+            <Box className={styles.Modal_COntainer}>
+              <Typography id="modal-modal-title" variant="h4" component="h2" style={{ marginBottom: "30px", textAlign: "center" }}>
+                Update Task
+              </Typography>
+              <Grid container rowSpacing={5}>
+                <Grid item xs={12}>
+                  <TextField
+                    id="name-input"
+                    name="title"
+                    label="Title"
+                    type="text"
+                    style={{ width: "100%" }}
+                    value={formValues.title}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleInputChange(e)
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    id="description-input"
+                    name="description"
+                    label="Description"
+                    type="text"
+                    style={{ width: "100%" }}
+                    value={formValues.description}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleInputChange(e)
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    id="sequence-input"
+                    name="sequence"
+                    label="Sequence"
+                    type="number"
+                    style={{ width: "100%" }}
+                    value={formValues.sequence}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleInputChange(e)
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    id="date-input"
+                    name="date"
+                    label="Date (YYYY-MM-DD)"
+                    type="text"
+                    style={{ width: "100%" }}
+                    value={formValues.date}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleInputChange(e)
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Select
+                    id="progress-input"
+                    name="progress"
+                    label="Progress"
+                    value={formValues.progress}
+                    onChange={(e) => handleSelectChange(e)}
+                  >
+                    <MenuItem value={TaskStatus.OPEN}>Open</MenuItem>
+                    <MenuItem value={TaskStatus.IN_PROGRESS}>In progress</MenuItem>
+                    <MenuItem value={TaskStatus.DONE}>Done</MenuItem>
+                  </Select>
+                </Grid>
+                <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-end" }}>
+                  <Button style={{ fontSize: "1.5rem" }} type="submit">Submit</Button>
+                </Grid>
+              </Grid>
+            </Box>
+          </Container>
+        </form >
+      </Modal >
     </>
   );
 };

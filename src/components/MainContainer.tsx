@@ -4,7 +4,7 @@ import { Grid, Typography } from "@mui/material";
 //import component
 import NavBar from "./NavBar";
 import axios from "axios";
-import { Task, TaskStatus } from "./Tasks/type";
+import { Task } from "./Tasks/type";
 import { Routes, Route } from "react-router-dom";
 import Tasks from "./Tasks";
 import Progress from "./Progress";
@@ -17,7 +17,6 @@ const MainContainer: React.FC = () => {
     try {
       const { data, status } = await axios.get(`${process.env.REACT_APP_URL}`);
       setTaskData(data);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -28,14 +27,22 @@ const MainContainer: React.FC = () => {
   }, []);
   return (
     <>
-      <Container sx={{ height: "100vh" }}>
-        <Grid container spacing={0}>
+      <Container
+        maxWidth={false}
+        sx={{
+          height: "100vh",
+          margin: 0,
+          display: "flex",
+          justifyContent: "center",
+          ['@media (min-width: 600px)'] : {padding: 0}
+        }} >
+        <Grid container spacing={0} maxWidth="2000px" style={{background: "linear-gradient(116.77deg, rgba(178, 239, 231, 0.69) 0%, rgba(85, 175, 188, 0.866358) 65.25%, #0F7E9B 98.64%)"}}>
           <Grid item xs={9}>
             <Grid container height="100vh">
               <Grid item xs={12}>
                 <NavBar allTasks={taskData} setTask={setTaskData} />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} style={{background:"#EDEFEC"}}>
                 <Routes>
                   <Route path="/daily" element={<Tasks tasks={taskData} setTasks={setTaskData} />} />
                   <Route

@@ -6,6 +6,12 @@ export enum TaskStatus {
   DONE = "DONE",
 }
 
+export enum SortBy {
+  "Sort by Sequence Number",
+  "Sort by Alphabet",
+  "Sort by Date"
+}
+
 export type TaskProps = {
 
   tasks: Task[];

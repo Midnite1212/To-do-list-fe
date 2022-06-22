@@ -4,9 +4,9 @@ import { TaskStatus } from "../NavBar/type";
 export const styles = stylesheet({
   Task_Card: {
     marginBottom: "20px",
-    backgroundColor: "#89A0FF",
-    height: "12vh",
+    height: "15vh",
     borderRadius: "20px",
+    padding:"20px",
   },
 });
 

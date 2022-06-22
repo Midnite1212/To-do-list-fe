@@ -1,59 +1,49 @@
 import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import { TaskStatus } from "../Tasks/type";
+import { styles } from "./styles";
 import { ProgressProps } from "./type";
 
 
 const Progress = (props: ProgressProps) => {
-  var open = 0;
-  var inProgress = 0;
-  var done = 0;
-
-  props.data.map((task) => {
-    if (task.status === "OPEN") open++;
-    else if (task.status === "DONE") done++;
-    else inProgress++;
-    return true;
-  });
+  const openTask = props.data.filter(a => a.status === TaskStatus.OPEN);
+  const inProgressTask = props.data.filter(a => a.status === TaskStatus.IN_PROGRESS);
+  const doneTask = props.data.filter(a => a.status === TaskStatus.DONE);
 
   return (
     <>
-      <Box
-        sx={{
-          background:
-            "linear-gradient(166.69deg, #B4C1F6 1.41%, #7190FF 97.41%)",
-        }}
-      >
+      <Box>
         <Grid container direction="column" height="100vh">
-          <Grid item xs={4}>
-            <Typography>Open ({open})</Typography>
-            {props.data.map((task, i) => {
-              if (task.status === "OPEN") {
-                return <Typography key={i}> {task.title}</Typography>;
-              } else if (open === 0)
-                return <Typography key={i}>No Tasks </Typography>;
-              else return null;
+          <Grid item xs={4} className={styles.Progress_Grid}>
+            <Typography className={styles.Progress_Title} style={{fontSize:"2rem"}}>
+              Open ({openTask.length})
+            </Typography>
+            {openTask.length === 0 ? <Typography>No Tasks </Typography> : null}
+            {openTask.map((task, i) => {
+              return <Typography key={i}> {task.title}</Typography>;
             })}
           </Grid>
-          <Grid item xs={4}>
-            <Typography>In Progress ({inProgress})</Typography>
-            {props.data.map((task, i) => {
-              if (task.status === "IN_PROGRESS") {
-                return <Typography key={i}> {task.title}</Typography>;
-              } else if (open === 0)
-                return <Typography key={i}>No Tasks </Typography>;
-              else return null;
+
+          <Grid item xs={4} className={styles.Progress_Grid}>
+            <Typography className={styles.Progress_Title} style={{fontSize:"2rem"}}>
+              In Progress ({inProgressTask.length})
+            </Typography>
+            {inProgressTask.length === 0 ? <Typography>No Tasks </Typography> : null}
+            {inProgressTask.map((task, i) => {
+              return <Typography key={i}> {task.title}</Typography>;
             })}
           </Grid>
-          <Grid item xs={4}>
-            <Typography>Done ({done})</Typography>
-            {props.data.map((task, i) => {
-              if (task.status === "DONE") {
-                return <Typography key={i}> {task.title}</Typography>;
-              } else if (open === 0)
-                return <Typography key={i}>No Tasks </Typography>;
-              else return null;
+
+          <Grid item xs={4} className={styles.Progress_Grid}>
+            <Typography className={styles.Progress_Title} style={{fontSize:"2rem"}}>
+              Done ({doneTask.length})
+            </Typography>
+            {doneTask.length === 0 ? <Typography>No Tasks </Typography> : null}
+            {doneTask.map((task, i) => {
+              return <Typography key={i}> {task.title}</Typography>;
             })}
           </Grid>
+
         </Grid>
       </Box>
     </>
