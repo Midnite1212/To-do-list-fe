@@ -1,5 +1,3 @@
-//Import styles
-import { Tabs } from "@mui/material";
 //Import components
 import MainContainer from "./components/MainContainer";
 import { BrowserRouter } from "react-router-dom";

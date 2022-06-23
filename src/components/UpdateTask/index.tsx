@@ -10,7 +10,7 @@ import {
   Grid
 } from "@mui/material";
 import { TaskStatus } from "../Tasks/type";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { UpdateTaskProps } from "./types";
 import { styles } from "./styles";

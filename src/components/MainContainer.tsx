@@ -16,7 +16,8 @@ const MainContainer: React.FC = () => {
   const getData = async () => {
     try {
       const { data, status } = await axios.get(`${process.env.REACT_APP_URL}`);
-      setTaskData(data);
+      if (status === 200)
+        setTaskData(data);
     } catch (error) {
       console.log(error);
     }
@@ -34,15 +35,15 @@ const MainContainer: React.FC = () => {
           margin: 0,
           display: "flex",
           justifyContent: "center",
-          ['@media (min-width: 600px)'] : {padding: 0}
+          '@media (min-width: 600px)': { padding: 0 }
         }} >
-        <Grid container spacing={0} maxWidth="2000px" style={{background: "linear-gradient(116.77deg, rgba(178, 239, 231, 0.69) 0%, rgba(85, 175, 188, 0.866358) 65.25%, #0F7E9B 98.64%)"}}>
+        <Grid container spacing={0} maxWidth="2000px" style={{ background: "linear-gradient(116.77deg, rgba(178, 239, 231, 0.69) 0%, rgba(85, 175, 188, 0.866358) 65.25%, #0F7E9B 98.64%)" }}>
           <Grid item xs={9}>
             <Grid container height="100vh">
               <Grid item xs={12}>
                 <NavBar allTasks={taskData} setTask={setTaskData} />
               </Grid>
-              <Grid item xs={12} style={{background:"#EDEFEC"}}>
+              <Grid item xs={12} style={{ background: "#EDEFEC" }}>
                 <Routes>
                   <Route path="/daily" element={<Tasks tasks={taskData} setTasks={setTaskData} />} />
                   <Route

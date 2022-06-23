@@ -8,41 +8,45 @@ import { styles } from "./styles";
 
 
 const Tasks = (props: TaskProps) => {
-  const currentPath = window.location.pathname;
+  //const currentPath = window.location.pathname;
   const [sortIndex, setSortIndex] = useState<number>(0);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const {tasks, setTasks} = props
+  const sortedTask = [...tasks]
 
-  const handleSort = () => {
+  function handleSort () {
     let currIndex: number = JSON.parse(JSON.stringify(sortIndex));
     currIndex = currIndex + 1;
     setSortIndex(currIndex);
     if (sortIndex >= 2) {
       setSortIndex(0);
     }
-
   }
-  useEffect(() => sortTask(sortIndex), [sortIndex])
 
   const sortTask = (index: number) => {
-    const sortedTask = [...props.tasks]
-    console.log(index)
     if (index === 0) {
       sortedTask.sort((a, b) => a.sequence - b.sequence)
-      props.setTasks(sortedTask)
+      setTasks(sortedTask)
     } else if (index === 1) {
       sortedTask.sort((a, b) => a.title.localeCompare(b.title))
-      props.setTasks(sortedTask)
+      setTasks(sortedTask)
     } else if (index === 2) {
       sortedTask.sort((a, b) => {
         const aDate = new Date(a.date).getTime()
         const bDate = new Date(b.date).getTime()
         return aDate - bDate
       })
-      props.setTasks(sortedTask)
+      
+      setTasks(sortedTask)
     }
   }
+
+  useEffect(() => {
+    
+    sortTask(sortIndex)
+  }, [sortIndex])
 
   const handleDeleteAll = async () => {
     for (let i = 0; i < props.tasks.length; i++) {

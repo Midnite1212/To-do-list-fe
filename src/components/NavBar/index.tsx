@@ -1,4 +1,4 @@
-import { Button, Grid, Typography, Modal } from "@mui/material";
+import { Button, Grid, Modal } from "@mui/material";
 import { NavBarProps } from "./type";
 import CreateTask from "../CreateTask";
 import React from "react";
