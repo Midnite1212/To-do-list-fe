@@ -3,7 +3,7 @@ import axios from "axios";
 import React from "react";
 import { useState } from "react";
 import UpdateTask from "../UpdateTask";
-import {  TaskStatus } from "../Tasks/type";
+import { TaskStatus } from "../Tasks/type";
 import { TaskCardProps } from "./types";
 import { styles } from "./styles";
 import DeleteTask from "../DeleteTask";
@@ -72,35 +72,41 @@ const TaskCard = (props: TaskCardProps) => {
   return (
     <>
       <Grid container className={styles.Task_Card} style={props.task.status === "DONE" ? { background: "#B2EFE7" } : (props.task.status === "OPEN" ? { background: "#0F7E9B" } : { background: "#92D7EF" })}  >
-        <Grid item xs={1} style={{display:"flex", alignItems:"center"}}>
+        <Grid item xs={1.5} style={{ display: "flex", alignItems: "center" }}>
           <Button
             onClick={() => {
               handleDone()
             }}
           >
-            {!done ? <img src={process.env.PUBLIC_URL+ 'Images/CheckedBox.svg'} alt="Check" /> : <img src={process.env.PUBLIC_URL+ 'Images/EmptyBox.svg'} alt="Box" />}
+            {!done ? <img src={process.env.PUBLIC_URL + 'Images/CheckedBox.svg'} alt="Check" /> : <img src={process.env.PUBLIC_URL + 'Images/EmptyBox.svg'} alt="Box" />}
           </Button>
         </Grid>
-        <Grid item xs={10}>
-          <Typography
-            sx={
-              task.status === "DONE"
-                ? { textDecoration: "line-through", color: "white" }
-                : { color: "white" }
-            }
-            style={{ marginTop: "0px", fontSize: "1.7rem" }}
-          >
-            {task.title}
-          </Typography>
-          <Typography
-            sx={
-              task.status === "DONE"
-                ? { textDecoration: "line-through", color: "white" }
-                : { color: "white" }
-            }
-          >
-            {task.description}
-          </Typography>
+        <Grid item xs={9.5} style={{ display: "flex" }}>
+          <Grid container>
+            <Grid item xs={12} style={{alignItems:"center", display:"flex"}}>
+              <Typography
+                sx={
+                  task.status === "DONE"
+                    ? { textDecoration: "line-through", color: "white" }
+                    : { color: "white" }
+                }
+                style={{ fontSize: "1.7rem", lineHeight: 1.2 }}
+              >
+                {task.title}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography
+                sx={
+                  task.status === "DONE"
+                    ? { textDecoration: "line-through", color: "white" }
+                    : { color: "white" }
+                }
+              >
+                {task.description}
+              </Typography>
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={1} style={{ display: "flex", alignItems: "center" }}>
           <Button

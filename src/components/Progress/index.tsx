@@ -15,7 +15,7 @@ const Progress = (props: ProgressProps) => {
       <Box>
         <Grid container direction="column" height="100vh">
           <Grid item xs={4} className={styles.Progress_Grid}>
-            <Typography className={styles.Progress_Title} style={{fontSize:"2rem"}}>
+            <Typography className={styles.Progress_Title} fontSize={{ base: "1rem", md: "1.5rem", lg: "2rem" }}>
               Open ({openTask.length})
             </Typography>
             {openTask.length === 0 ? <Typography>No Tasks </Typography> : null}
@@ -25,7 +25,7 @@ const Progress = (props: ProgressProps) => {
           </Grid>
 
           <Grid item xs={4} className={styles.Progress_Grid}>
-            <Typography className={styles.Progress_Title} style={{fontSize:"2rem"}}>
+            <Typography className={styles.Progress_Title} fontSize={{ base: "1rem", md: "1.5rem", lg: "2rem" }}>
               In Progress ({inProgressTask.length})
             </Typography>
             {inProgressTask.length === 0 ? <Typography>No Tasks </Typography> : null}
@@ -35,7 +35,7 @@ const Progress = (props: ProgressProps) => {
           </Grid>
 
           <Grid item xs={4} className={styles.Progress_Grid}>
-            <Typography className={styles.Progress_Title} style={{fontSize:"2rem"}}>
+            <Typography className={styles.Progress_Title} fontSize={{ base: "1rem", md: "1.5rem", lg: "2rem" }}>
               Done ({doneTask.length})
             </Typography>
             {doneTask.length === 0 ? <Typography>No Tasks </Typography> : null}

@@ -6,7 +6,7 @@ export const styles = stylesheet({
     marginBottom: "20px",
     height: "15vh",
     borderRadius: "20px",
-    padding:"20px",
+    padding:"10px",
   },
 });
 

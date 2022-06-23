@@ -89,17 +89,18 @@ const CreateTask = (props: CreateTaskProps) => {
     border: "2px solid #000",
     borderRadius: "37px",
     boxShadow: 24,
-    p: 8,
+    p: {base: 4, md: 5, lg: 8},
+    height:"auto"
   };
   return (
     <>
       <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
         <Container>
           <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h4" component="h2" style={{ marginBottom: "30px" }}>
+            <Typography id="modal-modal-title" variant="h4" component="h2" style={{ marginBottom: "20px", marginTop:"-20px" }}>
               Create Task
             </Typography>
-            <Grid container rowSpacing={5}>
+            <Grid container rowSpacing={{base: 1, md: 3, lg: 3, xl:5}}>
               <Grid item xs={12}>
                 <TextField
                   id="name-input"

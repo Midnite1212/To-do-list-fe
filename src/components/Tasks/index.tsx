@@ -1,14 +1,18 @@
-import { Grid, Typography, Button } from "@mui/material";
+import { Grid, Typography, Button, Box, Modal } from "@mui/material";
 import { Container } from "@mui/system";
 import TaskCard from "../Task-Card.tsx";
 import { SortBy, TaskProps } from "./type";
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
+import { styles } from "./styles";
 
 
 const Tasks = (props: TaskProps) => {
   const currentPath = window.location.pathname;
   const [sortIndex, setSortIndex] = useState<number>(0);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleSort = () => {
     let currIndex: number = JSON.parse(JSON.stringify(sortIndex));
@@ -49,23 +53,24 @@ const Tasks = (props: TaskProps) => {
       }
     }
     props.setTasks([])
+    handleClose()
   }
 
   return (
     <>
-      <Container sx={{height:"60vh"}}>
+      <Container sx={{ height: "60vh" }}>
         <Grid container sx={{ marginTop: "30px", marginBottom: "30px", display: "flex", alignItems: "center" }}>
-          <Grid item xs={1}>
+          <Grid item xs={1.5}>
             <Button onClick={handleSort}><img src={process.env.PUBLIC_URL + 'Images/SortIcon.svg'} alt="Sort" /></Button>
           </Grid>
-          <Grid item xs={7}>
+          <Grid item xs={6.5}>
             <Typography style={{ fontSize: "1.5rem" }}>{SortBy[sortIndex]}</Typography>
           </Grid>
           <Grid item xs={3} >
             <Typography style={{ fontSize: "1.5rem" }}>{props.tasks.length} Tasks</Typography>
           </Grid>
           <Grid item xs={1}>
-            <Button onClick={handleDeleteAll}>
+            <Button onClick={handleOpen}>
               Reset
             </Button>
           </Grid>
@@ -77,6 +82,32 @@ const Tasks = (props: TaskProps) => {
           })}
         </Grid>
       </Container>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Container>
+          <Box className={styles.Modal_Container}>
+            <Typography id="modal-modal-title" variant="h4" component="h2" style={{ marginBottom: "30px", alignSelf: "center" }}>
+              Delete All Task
+            </Typography>
+            <Grid container>
+              <Grid item xs={6}>
+                <Button onClick={handleDeleteAll}>
+                  Confirm
+                </Button>
+              </Grid>
+              <Grid item xs={6}>
+                <Button onClick={handleClose}>
+                  Cancel
+                </Button>
+              </Grid>
+            </Grid>
+          </Box>
+        </Container>
+      </Modal>
     </>
   );
 };

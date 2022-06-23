@@ -48,9 +48,9 @@ const NavBar = (props: NavBarProps) => {
           To Do List
         </Grid>
         <Grid item xs={2}>
-          <Button onClick={handleOpen} style={{ marginTop: "20px" }}>
+          <Button onClick={handleOpen} style={{ marginTop: "20px", marginBottom:"20px" }}>
             <img
-              width="75%"
+              width="65%"
               src={process.env.PUBLIC_URL + 'Images/AddIcon.svg'}
               alt="Add Icon" />
           </Button>
