@@ -152,14 +152,15 @@ const TaskCard = (props: TaskCardProps) => {
             </MenuItem>
           </Menu>
           {/* Popup */}
-          <UpdateTask
+          {openPopup ? <UpdateTask
             isOpen={openPopup}
             onClose={handleClosePopup}
             task={task}
             index={props.index}
             allTasks={props.allTask}
             setTask={props.setTask}
-          />
+          /> : null}
+          
           <DeleteTask
             isOpen={openDelete}
             onClose={handleCloseDelete}

@@ -1,7 +1,7 @@
 import { Grid, Typography, Button, Box, Modal } from "@mui/material";
 import { Container } from "@mui/system";
 import TaskCard from "../Task-Card.tsx";
-import { SortBy, TaskProps } from "./type";
+import { SortBy, Task, TaskProps } from "./type";
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { styles } from "./styles";
@@ -13,10 +13,11 @@ const Tasks = (props: TaskProps) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const {tasks, setTasks} = props
+  const { tasks, setTasks } = props
+  const [currTask, setCurrTask] = useState<Task[]>([...tasks])
   const sortedTask = [...tasks]
 
-  function handleSort () {
+  function handleSort() {
     let currIndex: number = JSON.parse(JSON.stringify(sortIndex));
     currIndex = currIndex + 1;
     setSortIndex(currIndex);
@@ -26,11 +27,13 @@ const Tasks = (props: TaskProps) => {
   }
 
   const sortTask = (index: number) => {
-    if (index === 0) {
+    if (index === 3) {
       sortedTask.sort((a, b) => a.sequence - b.sequence)
+      setCurrTask(sortedTask)
       setTasks(sortedTask)
     } else if (index === 1) {
       sortedTask.sort((a, b) => a.title.localeCompare(b.title))
+      setCurrTask(sortedTask)
       setTasks(sortedTask)
     } else if (index === 2) {
       sortedTask.sort((a, b) => {
@@ -38,15 +41,15 @@ const Tasks = (props: TaskProps) => {
         const bDate = new Date(b.date).getTime()
         return aDate - bDate
       })
-      
+      setCurrTask(sortedTask)
       setTasks(sortedTask)
     }
   }
 
   useEffect(() => {
-    
-    sortTask(sortIndex)
-  }, [sortIndex])
+    setCurrTask(tasks)
+  }, [tasks])
+
 
   const handleDeleteAll = async () => {
     for (let i = 0; i < props.tasks.length; i++) {
@@ -65,7 +68,7 @@ const Tasks = (props: TaskProps) => {
       <Container sx={{ height: "60vh" }}>
         <Grid container sx={{ marginTop: "30px", marginBottom: "30px", display: "flex", alignItems: "center" }}>
           <Grid item xs={1.5}>
-            <Button onClick={handleSort}><img src={process.env.PUBLIC_URL + 'Images/SortIcon.svg'} alt="Sort" /></Button>
+            <Button onClick={() => { handleSort(); sortTask(sortIndex + 1); }}><img src={process.env.PUBLIC_URL + 'Images/SortIcon.svg'} alt="Sort" /></Button>
           </Grid>
           <Grid item xs={6.5}>
             <Typography style={{ fontSize: "1.5rem" }}>{SortBy[sortIndex]}</Typography>
@@ -79,9 +82,9 @@ const Tasks = (props: TaskProps) => {
             </Button>
           </Grid>
         </Grid>
-        <Grid container style={{ overflowY: "scroll", maxHeight: "55vh" }}>
+        <Grid container style={{ overflowY: "scroll", maxHeight: "50vh" }}>
 
-          {props.tasks.map((t, i) => {
+          {currTask.map((t, i) => {
             return <Grid key={i} item xs={11}> <TaskCard task={t} index={i} allTask={props.tasks} setTask={props.setTasks} /></Grid>;
           })}
         </Grid>
